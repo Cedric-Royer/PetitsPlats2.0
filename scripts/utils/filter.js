@@ -1,14 +1,25 @@
 export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags) {
     const searchQuery = searchInput.value.toLowerCase();
-    const filteredRecipes = filterAndSearchRecipes(allRecipes, searchQuery, selectedTags);
+    const filteredRecipes = filterAndSearchRecipesWithArrayMethods(allRecipes, searchQuery, selectedTags);
     updateFilters(filteredRecipes, selectedTags);
     return filteredRecipes;
 }
 
-function filterAndSearchRecipes(recipes, searchQuery, selectedTags) {
+function filterAndSearchRecipesWithArrayMethods(recipes, searchQuery, selectedTags) {
     let filteredRecipes = filterRecipesByTags(recipes, selectedTags);
-    filteredRecipes = filterRecipesBySearchQuery(filteredRecipes, searchQuery);
+    filteredRecipes = filterRecipesBySearchQueryWithArrayMethods(filteredRecipes, searchQuery);
     return filteredRecipes;
+}
+
+function filterRecipesBySearchQueryWithArrayMethods(recipes, searchQuery) {
+    if (searchQuery.length < 3) return recipes;
+
+    // Implémentation de recherche avec méthodes d'array
+    return recipes.filter(recipe => {
+        return recipe.name.toLowerCase().includes(searchQuery) ||
+               recipe.description.toLowerCase().includes(searchQuery) ||
+               recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchQuery));
+    });
 }
 
 function filterRecipesByTags(recipes, selectedTags) {
@@ -37,16 +48,6 @@ function isRecipeMatchingAllTags(recipe, selectedTags) {
     );
 
     return ingredientMatch && applianceMatch && ustensilMatch;
-}
-
-function filterRecipesBySearchQuery(recipes, searchQuery) {
-    if (searchQuery.length < 3) return recipes;
-
-    return recipes.filter(recipe => {
-        return recipe.name.toLowerCase().includes(searchQuery) ||
-               recipe.description.toLowerCase().includes(searchQuery) ||
-               recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchQuery));
-    });
 }
 
 export function updateFilters(filteredRecipes, selectedTags) {
