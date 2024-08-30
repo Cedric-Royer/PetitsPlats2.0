@@ -111,7 +111,8 @@ function createSearchContainer(dropdownMenu) {
     const searchInput = document.createElement('input');
     searchInput.type = 'text';
     searchInput.classList.add('dropdown-filter-input', 'w-full', 'px-2', 'py-1', 'text-sm', 'outline-none');
-    
+    searchInput.maxLength = 20;
+
     const clearButton = document.createElement('button');
     clearButton.type = 'button';
     clearButton.innerHTML = '&times;';
