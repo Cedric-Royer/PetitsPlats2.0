@@ -1,7 +1,7 @@
 import { fetchData } from './utils/fetchData.js';
 import { applyFiltersAndSearch } from './utils/filter.js';
 import { updateTags } from './utils/tags.js';
-import { setupDropdownListeners } from './utils/dropdown.js';
+import { setupDropdownListeners } from './utils/dropdownUI.js';
 import { displayRecipes } from './utils/display.js';
 
 document.addEventListener('DOMContentLoaded', () => {
