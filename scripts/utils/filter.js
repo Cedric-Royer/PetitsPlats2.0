@@ -74,12 +74,12 @@ function loadDataInDropdowns(ingredientOptions, applianceOptions, ustensilOption
     const applianceDropdown = document.querySelector('#appliance-dropdown .dropdown-menu');
     const ustensilDropdown = document.querySelector('#ustensil-dropdown .dropdown-menu');
 
-    populateDropdownMenu(ingredientDropdown, ingredientOptions, selectedTags.ingredient);
-    populateDropdownMenu(applianceDropdown, applianceOptions, selectedTags.appliance);
-    populateDropdownMenu(ustensilDropdown, ustensilOptions, selectedTags.ustensil);
+    populateDropdownMenu(ingredientDropdown, ingredientOptions, selectedTags.ingredient, 'ingredient');
+    populateDropdownMenu(applianceDropdown, applianceOptions, selectedTags.appliance, 'appliance' );
+    populateDropdownMenu(ustensilDropdown, ustensilOptions, selectedTags.ustensil, 'ustensil');
 }
 
-function populateDropdownMenu(dropdownMenu, options, selectedTags) {
+function populateDropdownMenu(dropdownMenu, options, selectedTags, dropdownId) {
     const selectedValues = new Set(selectedTags);
     dropdownMenu.innerHTML = '';  // Vider le contenu actuel
 
@@ -87,7 +87,7 @@ function populateDropdownMenu(dropdownMenu, options, selectedTags) {
     const fragment = document.createDocumentFragment();
 
     // Créer et ajouter le conteneur de recherche
-    const searchContainer = createSearchContainer(dropdownMenu);
+    const searchContainer = createSearchContainer(dropdownMenu, dropdownId);
     fragment.appendChild(searchContainer);
 
     // Ajouter les options
@@ -105,11 +105,12 @@ function populateDropdownMenu(dropdownMenu, options, selectedTags) {
     dropdownMenu.appendChild(fragment);
 }
 
-function createSearchContainer(dropdownMenu) {
+function createSearchContainer(dropdownMenu, dropdownId) {
     const searchContainer = document.createElement('div');
     searchContainer.classList.add('dropdown-filter-container', 'relative', 'mb-2', 'flex', 'items-center', 'border', 'rounded', 'border-gray-300', 'bg-white', 'p-1');
     
     const searchInput = document.createElement('input');
+    searchInput.id = `search-${dropdownId}`;
     searchInput.type = 'text';
     searchInput.setAttribute("minlength", "3")
     searchInput.setAttribute("maxlength", "40")
@@ -147,7 +148,7 @@ function createSearchIcon() {
 
 function addSearchContainerEventListeners(dropdownMenu, searchInput, clearButton) {
     function filterOptions() {
-        const filterValue = searchInput.value.toLowerCase();
+        const filterValue = searchInput.value.toLowerCase().trim();
         dropdownMenu.querySelectorAll('.dropdown-item').forEach(item => {
             const text = item.textContent.toLowerCase();
             item.style.display = text.includes(filterValue) ? '' : 'none';
