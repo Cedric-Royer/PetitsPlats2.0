@@ -137,16 +137,14 @@ function loadDataInDropdowns(ingredientOptions, applianceOptions, ustensilOption
 
 function populateDropdownMenu(dropdownMenu, options, selectedTags) {
     const selectedValues = new Set(selectedTags);
-    dropdownMenu.innerHTML = '';  // Vider le contenu actuel
+    dropdownMenu.innerHTML = '';  
 
-    // Créer un fragment pour les options
     const fragment = document.createDocumentFragment();
 
-    // Créer et ajouter le conteneur de recherche
     const searchContainer = createSearchContainer(dropdownMenu);
     fragment.appendChild(searchContainer);
 
-    // Ajouter les options
+
     options.sort().forEach(option => {
         const item = document.createElement('div');
         item.classList.add('dropdown-item');
