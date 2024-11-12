@@ -1,5 +1,5 @@
 export function updateTags(selectedTags, tagsContainer, applyFiltersAndSearch) {
-    tagsContainer.innerHTML = '';
+    tagsContainer.textContent = '';
 
     Object.keys(selectedTags).forEach(type => {
         selectedTags[type].forEach(value => {
@@ -17,10 +17,9 @@ function createTag(value, type, tagsContainer, selectedTags, applyFiltersAndSear
     tagText.classList.add('mr-2');
 
     const removeIcon = document.createElement('span');
-    removeIcon.innerHTML = '&times;';
+    removeIcon.textContent = '\u00D7';
     removeIcon.classList.add('ml-2', 'cursor-pointer', 'remove-tag');
     
-    // Ajoute l'écouteur pour le clic sur l'icône "x"
     removeIcon.addEventListener('click', () => {
         removeTag(type, value, selectedTags, tagsContainer, applyFiltersAndSearch);
     });
@@ -34,12 +33,7 @@ function createTag(value, type, tagsContainer, selectedTags, applyFiltersAndSear
 }
 
 function removeTag(type, value, selectedTags, tagsContainer, applyFiltersAndSearch) {
-    // Suppression du tag
-    selectedTags[type] = selectedTags[type].filter(tag => tag !== value);
-        
-    // Mise à jour des tags
+    selectedTags[type] = selectedTags[type].filter(tag => tag !== value);       
     updateTags(selectedTags, tagsContainer, applyFiltersAndSearch);
-
-    // Appliquer les filtres et mettre à jour l'affichage des recettes
     applyFiltersAndSearch();
 }

@@ -88,7 +88,7 @@ function loadDataInDropdowns(ingredientOptions, applianceOptions, ustensilOption
 
 function populateDropdownMenu(dropdownMenu, options, selectedTags, dropdownId) {
     const selectedValues = new Set(selectedTags);
-    dropdownMenu.innerHTML = '';  
+    dropdownMenu.textContent = '';
 
     const fragment = document.createDocumentFragment();
 
@@ -124,7 +124,7 @@ function createSearchContainer(dropdownMenu, dropdownId) {
     
     const clearButton = document.createElement('button');
     clearButton.type = 'button';
-    clearButton.innerHTML = '&times;';
+    clearButton.textContent = '\u00D7';
     clearButton.classList.add('dropdown-remove-input', 'absolute', 'right-8', 'text-custom-gray', 'hover:text-black', 'focus:outline-none', 'cursor-pointer', 'hidden');
     
     const searchIcon = createSearchIcon();
@@ -139,14 +139,10 @@ function createSearchContainer(dropdownMenu, dropdownId) {
 }
 
 function createSearchIcon() {
-    const searchIcon = document.createElement('span');
-    searchIcon.innerHTML = `
-        <svg class="dropdown-search-icon text-custom-gray" viewBox="0 0 28 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="10" cy="10.4219" r="9.5" stroke="#7A7A7A" stroke-width="2"/>
-            <line x1="18.3536" y1="19.0683" x2="27.3536" y2="28.0683" stroke="#7A7A7A" stroke-width="2"/>
-        </svg>
-    `;
-    searchIcon.classList.add('absolute', 'right-2', 'text-gray-400');
+    const searchIcon = document.createElement('img');
+    searchIcon.src = '../assets/icons/search-icon.svg';
+    searchIcon.alt = 'icône de recherche';
+    searchIcon.classList.add('dropdown-search-icon', 'absolute', 'right-2', 'text-gray-400');
     return searchIcon;
 }
 
