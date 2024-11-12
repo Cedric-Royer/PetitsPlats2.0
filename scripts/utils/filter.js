@@ -1,5 +1,5 @@
 export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags) {
-    const searchQuery = searchInput.value.toLowerCase();
+    const searchQuery = searchInput.value.toLowerCase().trim();
     const filteredRecipes = filterAndSearchRecipesWithArrayMethods(allRecipes, searchQuery, selectedTags);
     updateFilters(filteredRecipes, selectedTags);
     return filteredRecipes;
@@ -111,6 +111,10 @@ function createSearchContainer(dropdownMenu) {
     
     const searchInput = document.createElement('input');
     searchInput.type = 'text';
+    searchInput.setAttribute("minlength", "3")
+    searchInput.setAttribute("maxlength", "40")
+    searchInput.setAttribute("pattern", "[A-Za-zÀ-ÿ\s'\\\-]+")
+    searchInput.setAttribute("title", "Lettres, espaces, apostrophes et tirets autorisés")
     searchInput.classList.add('dropdown-filter-input', 'w-full', 'px-2', 'py-1', 'text-sm', 'outline-none');
     
     const clearButton = document.createElement('button');
