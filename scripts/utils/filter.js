@@ -1,8 +1,17 @@
 export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags) {
     const searchQuery = searchInput.value.toLowerCase().trim();
-    const filteredRecipes = filterAndSearchRecipesWithArrayMethods(allRecipes, searchQuery, selectedTags);
+    const safeSearchQuery = htmlspecialchars(searchQuery);
+    const filteredRecipes = filterAndSearchRecipesWithArrayMethods(allRecipes, safeSearchQuery, selectedTags);
     updateFilters(filteredRecipes, selectedTags);
     return filteredRecipes;
+}
+
+function htmlspecialchars(str) {
+    return str.replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/=/g,'')
 }
 
 function filterAndSearchRecipesWithArrayMethods(recipes, searchQuery, selectedTags) {
@@ -144,12 +153,13 @@ function createSearchIcon() {
 function addSearchContainerEventListeners(dropdownMenu, searchInput, clearButton) {
     function filterOptions() {
         const filterValue = searchInput.value.toLowerCase().trim();
+        const safeFilterValue = htmlspecialchars(filterValue);
         dropdownMenu.querySelectorAll('.dropdown-item').forEach(item => {
             const text = item.textContent.toLowerCase();
-            item.style.display = text.includes(filterValue) ? '' : 'none';
+            item.style.display = text.includes(safeFilterValue) ? '' : 'none';
         });
 
-        clearButton.classList.toggle('hidden', filterValue.trim() === '');
+        clearButton.classList.toggle('hidden', safeFilterValue.trim() === '');
     }
 
     clearButton.addEventListener('click', (event) => {

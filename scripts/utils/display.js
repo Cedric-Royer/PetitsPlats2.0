@@ -16,7 +16,7 @@ export function displayRecipes(recipes, searchQuery, hasTags) {
 }
 
 function clearRecipesContainer(container) {
-    container.innerHTML = '';
+    container.innerText = '';
 }
 
 
