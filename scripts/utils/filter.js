@@ -14,7 +14,6 @@ function filterAndSearchRecipesWithArrayMethods(recipes, searchQuery, selectedTa
 function filterRecipesBySearchQueryWithArrayMethods(recipes, searchQuery) {
     if (searchQuery.length < 3) return recipes;
 
-    // Implémentation de recherche avec méthodes d'array
     return recipes.filter(recipe => {
         return recipe.name.toLowerCase().includes(searchQuery) ||
                recipe.description.toLowerCase().includes(searchQuery) ||
@@ -57,7 +56,6 @@ export function updateFilters(filteredRecipes, selectedTags) {
 
     populateFilterSets(filteredRecipes, ingredientSet, applianceSet, ustensilSet);
 
-    // Mettre à jour les dropdowns personnalisés avec les nouvelles options
     loadDataInDropdowns(Array.from(ingredientSet), Array.from(applianceSet), Array.from(ustensilSet), selectedTags);
 }
 
@@ -81,16 +79,13 @@ function loadDataInDropdowns(ingredientOptions, applianceOptions, ustensilOption
 
 function populateDropdownMenu(dropdownMenu, options, selectedTags, dropdownId) {
     const selectedValues = new Set(selectedTags);
-    dropdownMenu.innerHTML = '';  // Vider le contenu actuel
+    dropdownMenu.innerHTML = '';  
 
-    // Créer un fragment pour les options
     const fragment = document.createDocumentFragment();
 
-    // Créer et ajouter le conteneur de recherche
     const searchContainer = createSearchContainer(dropdownMenu, dropdownId);
     fragment.appendChild(searchContainer);
 
-    // Ajouter les options
     options.sort().forEach(option => {
         const item = document.createElement('div');
         item.classList.add('dropdown-item');
