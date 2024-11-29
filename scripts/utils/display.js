@@ -56,7 +56,7 @@ function createRecipeImageContainer(recipe) {
     recipeImageContainer.classList.add('relative');
 
     const recipeImage = document.createElement('img');
-    recipeImage.src = `assets/images/recettes/${recipe.image}`;
+    recipeImage.src = `./assets/images/recettes/${recipe.image}`;
     recipeImage.alt = `Image de ${recipe.name}`;
     recipeImage.classList.add('w-full', 'h-48', 'object-cover');
 
