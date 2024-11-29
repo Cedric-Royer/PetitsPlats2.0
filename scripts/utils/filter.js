@@ -140,7 +140,7 @@ function createSearchContainer(dropdownMenu, dropdownId) {
 
 function createSearchIcon() {
     const searchIcon = document.createElement('img');
-    searchIcon.src = '../assets/icons/search-icon.svg';
+    searchIcon.src = './assets/icons/search-icon.svg';
     searchIcon.alt = 'icône de recherche';
     searchIcon.classList.add('dropdown-search-icon', 'absolute', 'right-2', 'text-gray-400');
     return searchIcon;
