@@ -1,12 +1,12 @@
 export function applyFiltersAndSearch(allRecipes, searchInput, selectedTags) {
     const searchQuery = searchInput.value.toLowerCase().trim();
-    const safeSearchQuery = htmlspecialchars(searchQuery);
+    const safeSearchQuery = replaceSpecialChars(searchQuery);
     const filteredRecipes = filterAndSearchRecipesWithArrayMethods(allRecipes, safeSearchQuery, selectedTags);
     updateFilters(filteredRecipes, selectedTags);
     return filteredRecipes;
 }
 
-function htmlspecialchars(str) {
+function replaceSpecialChars(str) {
     return str.replace(/&/g, '&amp;')
               .replace(/</g, '&lt;')
               .replace(/>/g, '&gt;')
