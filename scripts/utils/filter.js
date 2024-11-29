@@ -149,7 +149,7 @@ function createSearchIcon() {
 function addSearchContainerEventListeners(dropdownMenu, searchInput, clearButton) {
     function filterOptions() {
         const filterValue = searchInput.value.toLowerCase().trim();
-        const safeFilterValue = htmlspecialchars(filterValue);
+        const safeFilterValue = replaceSpecialChars(filterValue);
         dropdownMenu.querySelectorAll('.dropdown-item').forEach(item => {
             const text = item.textContent.toLowerCase();
             item.style.display = text.includes(safeFilterValue) ? '' : 'none';
