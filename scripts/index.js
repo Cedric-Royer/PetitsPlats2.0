@@ -1,11 +1,13 @@
 import { fetchRecipes } from './services/fetchData.js';
-import { applyFiltersAndSearch } from './features/filtering/applyFilters.js';
+import { applyFiltersAndSearch } from './features/filtering/applyFiltersAndSearch.js.js';
 import { setupSearchBar } from './features/search/setupSearchBar.js';
 import { createRecipeCard } from './components/RecipeCard.js';
 import { updateTags } from './components/Tag.js';
 import { updateRecipeCount } from './utils/updateRecipeCount.js';
 import { setupDropdownListeners } from './features/dropdowns/setupDropdownListeners.js';
 import { updateDropdowns } from './features/dropdowns/updateDropdowns.js';
+import { displayNoResultsMessage } from './utils/displayMessages.js';
+
 
 document.addEventListener('DOMContentLoaded', async () => {
     const recipesData = './data/recipes.json';
@@ -40,14 +42,19 @@ document.addEventListener('DOMContentLoaded', async () => {
      */
     function updateUI() {
         const filteredRecipes = applyFiltersAndSearch(allRecipes, searchInput, selectedTags);
-
+    
         updateRecipeCount(filteredRecipes.length);
-
+    
         recipesContainer.innerHTML = '';
-        filteredRecipes.forEach(recipe => recipesContainer.appendChild(createRecipeCard(recipe)));
-
+    
+        if (filteredRecipes.length === 0) {
+            displayNoResultsMessage(recipesContainer, searchInput.value, selectedTags.ingredient.length || selectedTags.appliance.length || selectedTags.ustensil.length);
+        } else {
+            filteredRecipes.forEach(recipe => recipesContainer.appendChild(createRecipeCard(recipe)));
+        }
+    
         updateTags(selectedTags, tagsContainer, removeTag);
-
+    
         updateDropdowns(filteredRecipes, selectedTags);
     }
 
