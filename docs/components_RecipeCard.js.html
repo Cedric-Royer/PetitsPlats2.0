@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>components/RecipeCard.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addSearchContainerEventListeners">addSearchContainerEventListeners</a></li><li><a href="global.html#applyFiltersAndSearch">applyFiltersAndSearch</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#clearContainer">clearContainer</a></li><li><a href="global.html#closeAllDropdowns">closeAllDropdowns</a></li><li><a href="global.html#createElement">createElement</a></li><li><a href="global.html#createIngredientItem">createIngredientItem</a></li><li><a href="global.html#createIngredientsList">createIngredientsList</a></li><li><a href="global.html#createRecipeCard">createRecipeCard</a></li><li><a href="global.html#createRecipeContent">createRecipeContent</a></li><li><a href="global.html#createRecipeDescription">createRecipeDescription</a></li><li><a href="global.html#createRecipeImageContainer">createRecipeImageContainer</a></li><li><a href="global.html#createSearchContainer">createSearchContainer</a></li><li><a href="global.html#createSearchIcon">createSearchIcon</a></li><li><a href="global.html#createTag">createTag</a></li><li><a href="global.html#displayNoResultsMessage">displayNoResultsMessage</a></li><li><a href="global.html#fetchRecipes">fetchRecipes</a></li><li><a href="global.html#filterRecipesBySearchQuery">filterRecipesBySearchQuery</a></li><li><a href="global.html#filterRecipesByTags">filterRecipesByTags</a></li><li><a href="global.html#handleDropdownSelection">handleDropdownSelection</a></li><li><a href="global.html#loadDataInDropdowns">loadDataInDropdowns</a></li><li><a href="global.html#populateDropdownMenu">populateDropdownMenu</a></li><li><a href="global.html#replaceSpecialChars">replaceSpecialChars</a></li><li><a href="global.html#setupDropdownListeners">setupDropdownListeners</a></li><li><a href="global.html#setupSearchBar">setupSearchBar</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#updateDropdowns">updateDropdowns</a></li><li><a href="global.html#updateRecipeCount">updateRecipeCount</a></li><li><a href="global.html#updateTags">updateTags</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">components/RecipeCard.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { createElement } from '../utils/domUtils.js';
+
+/**
+ * Crée une carte de recette (HTML) à partir des informations d'une recette.
+ *
+ * @param {Object} recipe - Les données de la recette.
+ * @param {string} recipe.name - Le nom de la recette.
+ * @param {string} recipe.image - Le chemin de l'image de la recette.
+ * @param {number} recipe.time - Le temps de préparation de la recette (en minutes).
+ * @param {string} recipe.description - La description de la recette.
+ * @param {Object[]} recipe.ingredients - La liste des ingrédients de la recette.
+ * @param {string} recipe.ingredients[].ingredient - Le nom de l'ingrédient.
+ * @param {number} [recipe.ingredients[].quantity] - La quantité de l'ingrédient.
+ * @param {string} [recipe.ingredients[].unit] - L'unité de mesure de l'ingrédient.
+ * @returns {HTMLElement} - La carte de recette créée.
+ */
+export function createRecipeCard(recipe) {
+    const recipeCard = createElement('article', { classes: ['recipe-card', 'rounded-lg', 'shadow-md', 'overflow-hidden', 'bg-white'] });
+
+    const recipeImageContainer = createRecipeImageContainer(recipe);
+    const recipeContent = createRecipeContent(recipe);
+
+    recipeCard.append(recipeImageContainer, recipeContent);
+    return recipeCard;
+}
+
+/**
+ * Crée un conteneur pour l'image d'une recette, incluant un badge indiquant le temps de préparation.
+ *
+ * @param {Object} recipe - Les données de la recette.
+ * @param {string} recipe.name - Le nom de la recette.
+ * @param {string} recipe.image - Le chemin de l'image de la recette.
+ * @param {number} recipe.time - Le temps de préparation de la recette (en minutes).
+ * @returns {HTMLElement} - Le conteneur de l'image de la recette.
+ */
+function createRecipeImageContainer(recipe) {
+    const container = createElement('div', { classes: ['relative'] });
+    const image = createElement('img', {
+        attributes: { src: `./assets/images/recettes/${recipe.image}`, alt: `Image de ${recipe.name}` },
+        classes: ['w-full', 'h-48', 'object-cover'],
+    });
+    const timeBadge = createElement('div', {
+        textContent: `${recipe.time}min`,
+        classes: ['recipe-time', 'absolute', 'top-2', 'right-2', 'text-xs', 'px-4', 'py-1', 'rounded-full'],
+    });
+    container.append(image, timeBadge);
+    return container;
+}
+
+/**
+ * Crée le contenu principal d'une carte de recette.
+ *
+ * @param {Object} recipe - Les données de la recette.
+ * @param {string} recipe.name - Le nom de la recette.
+ * @param {string} recipe.description - La description de la recette.
+ * @param {Object[]} recipe.ingredients - La liste des ingrédients de la recette.
+ * @returns {HTMLElement} - Le contenu de la carte de recette.
+ */
+function createRecipeContent(recipe) {
+    const content = createElement('div', { classes: ['p-4', 'recipe-content'] });
+    const name = createElement('h2', { textContent: recipe.name, classes: ['text-xl', 'font-normal', 'mb-5'] });
+
+    const descriptionLabel = createElement('h3', { textContent: 'Recette', classes: ['recipe-subtitle', 'text-custom-gray', 'font-bold', 'text-sm', 'uppercase', 'mb-5'] });
+    const description = createRecipeDescription(recipe);
+
+    const ingredientsLabel = createElement('h3', { textContent: 'Ingrédients', classes: ['recipe-subtitle', 'text-custom-gray', 'font-bold', 'text-sm', 'uppercase', 'mb-5'] });
+    const ingredients = createIngredientsList(recipe);
+
+    content.append(name, descriptionLabel, description, ingredientsLabel, ingredients);
+    return content;
+}
+
+/**
+ * Crée la description textuelle d'une recette.
+ *
+ * @param {Object} recipe - Les données de la recette.
+ * @param {string} recipe.description - La description de la recette.
+ * @returns {HTMLElement} - L'élément contenant la description de la recette.
+ */
+function createRecipeDescription(recipe) {
+    return createElement('p', {
+        textContent: recipe.description,
+        classes: ['recipe-description', 'text-sm', 'mb-4', 'line-clamp-4'],
+    });
+}
+
+/**
+ * Crée une liste HTML des ingrédients d'une recette.
+ *
+ * @param {Object} recipe - Les données de la recette.
+ * @param {Object[]} recipe.ingredients - La liste des ingrédients de la recette.
+ * @param {string} recipe.ingredients[].ingredient - Le nom de l'ingrédient.
+ * @param {number} [recipe.ingredients[].quantity] - La quantité de l'ingrédient.
+ * @param {string} [recipe.ingredients[].unit] - L'unité de mesure de l'ingrédient.
+ * @returns {HTMLElement} - La liste HTML des ingrédients.
+ */
+function createIngredientsList(recipe) {
+    const list = createElement('ul', { classes: ['text-sm', 'grid', 'grid-cols-2', 'gap-x-2'] });
+    recipe.ingredients.forEach(ingredient => {
+        const item = createIngredientItem(ingredient);
+        list.appendChild(item);
+    });
+    return list;
+}
+
+/**
+ * Crée un élément HTML pour un ingrédient.
+ *
+ * @param {Object} ingredient - Les données de l'ingrédient.
+ * @param {string} ingredient.ingredient - Le nom de l'ingrédient.
+ * @param {number} [ingredient.quantity] - La quantité de l'ingrédient.
+ * @param {string} [ingredient.unit] - L'unité de mesure de l'ingrédient.
+ * @returns {HTMLElement} - L'élément HTML représentant l'ingrédient.
+ */
+function createIngredientItem(ingredient) {
+    const item = createElement('li', { classes: ['ingredient-item', 'mb-5'] });
+
+    const name = createElement('span', {
+        textContent: ingredient.ingredient,
+        classes: ['block', 'ingredient-item__name'],
+    });
+
+    const quantity = createElement('span', {
+        textContent: `${ingredient.quantity || ''} ${ingredient.unit || ''}`,
+        classes: ['block', 'ingredient-item__quantity'],
+    });
+
+    item.append(name, quantity);
+    return item;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Fri Dec 06 2024 12:53:35 GMT+0100 (heure normale d’Europe centrale) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>

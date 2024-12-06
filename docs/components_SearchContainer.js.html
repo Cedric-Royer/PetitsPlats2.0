@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>components/SearchContainer.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <input type="text" id="nav-search" placeholder="Search" />
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#addSearchContainerEventListeners">addSearchContainerEventListeners</a></li><li><a href="global.html#applyFiltersAndSearch">applyFiltersAndSearch</a></li><li><a href="global.html#capitalize">capitalize</a></li><li><a href="global.html#clearContainer">clearContainer</a></li><li><a href="global.html#closeAllDropdowns">closeAllDropdowns</a></li><li><a href="global.html#createElement">createElement</a></li><li><a href="global.html#createIngredientItem">createIngredientItem</a></li><li><a href="global.html#createIngredientsList">createIngredientsList</a></li><li><a href="global.html#createRecipeCard">createRecipeCard</a></li><li><a href="global.html#createRecipeContent">createRecipeContent</a></li><li><a href="global.html#createRecipeDescription">createRecipeDescription</a></li><li><a href="global.html#createRecipeImageContainer">createRecipeImageContainer</a></li><li><a href="global.html#createSearchContainer">createSearchContainer</a></li><li><a href="global.html#createSearchIcon">createSearchIcon</a></li><li><a href="global.html#createTag">createTag</a></li><li><a href="global.html#displayNoResultsMessage">displayNoResultsMessage</a></li><li><a href="global.html#fetchRecipes">fetchRecipes</a></li><li><a href="global.html#filterRecipesBySearchQuery">filterRecipesBySearchQuery</a></li><li><a href="global.html#filterRecipesByTags">filterRecipesByTags</a></li><li><a href="global.html#handleDropdownSelection">handleDropdownSelection</a></li><li><a href="global.html#loadDataInDropdowns">loadDataInDropdowns</a></li><li><a href="global.html#populateDropdownMenu">populateDropdownMenu</a></li><li><a href="global.html#replaceSpecialChars">replaceSpecialChars</a></li><li><a href="global.html#setupDropdownListeners">setupDropdownListeners</a></li><li><a href="global.html#setupSearchBar">setupSearchBar</a></li><li><a href="global.html#toggleDropdown">toggleDropdown</a></li><li><a href="global.html#updateDropdowns">updateDropdowns</a></li><li><a href="global.html#updateRecipeCount">updateRecipeCount</a></li><li><a href="global.html#updateTags">updateTags</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">components/SearchContainer.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { replaceSpecialChars } from '../utils/textUtils.js';
+import { createElement } from '../utils/domUtils.js';
+
+/**
+ * Crée un conteneur de recherche pour le menu déroulant.
+ * @param {HTMLElement} dropdownMenu - Le menu dropdown associé.
+ * @param {string} dropdownId - L'identifiant du dropdown.
+ * @returns {HTMLElement} Le conteneur de recherche.
+ */
+export function createSearchContainer(dropdownMenu, dropdownId) {
+    const searchContainer = createElement('div', {
+        classes: [
+            'dropdown-filter-container',
+            'relative',
+            'mb-2',
+            'flex',
+            'items-center',
+            'border',
+            'rounded',
+            'border-gray-300',
+            'bg-white',
+            'p-1'
+        ]
+    });
+    
+    const searchInput = createElement('input', {
+        classes: ['dropdown-filter-input', 'w-full', 'px-2', 'py-1', 'text-sm', 'outline-none'],
+        attributes: {
+            id: `search-${dropdownId}`,
+            type: 'text',
+            minlength: '3',
+            maxlength: '40',
+            pattern: "[A-Za-zÀ-ÿ\\s'\\-]+",
+            title: 'Lettres, espaces, apostrophes et tirets autorisés'
+        }
+    });
+    
+    const clearButton = createElement('button', {
+        classes: [
+            'dropdown-remove-input',
+            'absolute',
+            'right-8',
+            'text-custom-gray',
+            'hover:text-black',
+            'focus:outline-none',
+            'cursor-pointer',
+            'hidden'
+        ],
+        attributes: { type: 'button' },
+        textContent: '\u00D7' 
+    });
+    
+    const searchIcon = createSearchIcon();
+
+    searchContainer.appendChild(searchInput);
+    searchContainer.appendChild(clearButton);
+    searchContainer.appendChild(searchIcon);
+
+    addSearchContainerEventListeners(dropdownMenu, searchInput, clearButton);
+
+    return searchContainer;
+}
+
+/**
+ * Crée une icône de recherche.
+ * @returns {HTMLElement} L'élément de l'icône de recherche.
+ */
+function createSearchIcon() {
+    return createElement('img', {
+        classes: ['dropdown-search-icon', 'absolute', 'right-2', 'text-gray-400'],
+        attributes: { src: './assets/icons/search-icon.svg', alt: 'icône de recherche' }
+    });
+}
+
+/**
+ * Ajoute les gestionnaires d'événements au conteneur de recherche.
+ * @param {HTMLElement} dropdownMenu - Le menu dropdown associé.
+ * @param {HTMLInputElement} searchInput - Le champ de recherche.
+ * @param {HTMLButtonElement} clearButton - Le bouton pour effacer l'entrée.
+ */
+function addSearchContainerEventListeners(dropdownMenu, searchInput, clearButton) {
+    function filterOptions() {
+        const filterValue = searchInput.value.toLowerCase().trim();
+        const safeFilterValue = replaceSpecialChars(filterValue);
+        dropdownMenu.querySelectorAll('.dropdown-item').forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(safeFilterValue) ? '' : 'none';
+        });
+
+        clearButton.classList.toggle('hidden', safeFilterValue.trim() === '');
+    }
+
+    clearButton.addEventListener('click', event => {
+        event.stopPropagation();
+        searchInput.value = '';
+        filterOptions();
+    });
+
+    searchInput.addEventListener('input', filterOptions);
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Fri Dec 06 2024 12:53:35 GMT+0100 (heure normale d’Europe centrale) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/search.js" defer></script>
+
+
+<script src="scripts/collapse.js" defer></script>
+
+
+</body>
+</html>
