@@ -14,7 +14,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     let allRecipes = [];
     const selectedTags = { ingredient: [], appliance: [], ustensil: [] };
 
+    const searchForm = document.getElementById('search-bar');
     const searchInput = document.querySelector('.search-input');
+    const clearButton = document.querySelector('.search-clear-button');
     const recipesContainer = document.querySelector('.recipes-container');
     const tagsContainer = document.querySelector('.tags-container');
 
@@ -65,5 +67,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateUI();
 
     setupDropdownListeners(selectedTags, updateUI);
-    setupSearchBar(searchInput, updateUI);
+    setupSearchBar(searchForm, searchInput, clearButton, updateUI);
+
 });

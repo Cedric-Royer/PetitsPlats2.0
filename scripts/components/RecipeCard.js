@@ -35,14 +35,29 @@ export function createRecipeCard(recipe) {
  */
 function createRecipeImageContainer(recipe) {
     const container = createElement('div', { classes: ['relative'] });
+
+    const imageBasePath = `./assets/images/recettes/${recipe.image}`;
+    const [baseName, extension] = recipe.image.split('.');
+    const srcset = `
+        ${imageBasePath.replace(recipe.image, `${baseName}-small.${extension}`)} 480w,
+        ${imageBasePath.replace(recipe.image, `${baseName}-medium.${extension}`)} 768w
+    `;
+
     const image = createElement('img', {
-        attributes: { src: `./assets/images/recettes/${recipe.image}`, alt: `Image de ${recipe.name}` },
+        attributes: {
+            src: imageBasePath.replace(recipe.image, `${baseName}-small.${extension}`), 
+            srcset: srcset.trim(),
+            sizes: '(max-width: 1640px) 480px, 650px',
+            alt: `Image de ${recipe.name}`
+        },
         classes: ['w-full', 'h-48', 'object-cover'],
     });
+
     const timeBadge = createElement('div', {
         textContent: `${recipe.time}min`,
         classes: ['recipe-time', 'absolute', 'top-2', 'right-2', 'text-xs', 'px-4', 'py-1', 'rounded-full'],
     });
+
     container.append(image, timeBadge);
     return container;
 }
